@@ -65,7 +65,29 @@ function initSearch() {
   });
 }
 
+function initVideoLinks() {
+  const cards = document.querySelectorAll('.video-card, .short-card');
+
+  cards.forEach((card) => {
+    const thumbnail = card.querySelector('.thumbnail');
+    const title = card.querySelector('.video-title, .short-card-title');
+    if (!thumbnail || !title || thumbnail.tagName === 'IFRAME') return;
+
+    const link = document.createElement('a');
+    const youtubeUrl = card.dataset.youtubeUrl;
+    link.href = youtubeUrl || `https://www.youtube.com/results?search_query=${encodeURIComponent(title.textContent.trim())}`;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'youtube-video-link';
+    link.setAttribute('aria-label', `Watch ${title.textContent.trim()} on YouTube`);
+
+    thumbnail.parentNode.insertBefore(link, thumbnail);
+    link.appendChild(thumbnail);
+  });
+}
+
 initTheme();
 initChips();
 initSidebar();
 initSearch();
+initVideoLinks();
